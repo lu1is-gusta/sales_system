@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\SalesAndSellerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('sales', [SalesAndSellerController::class, 'index']);
+Route::post('sales', [SalesAndSellerController::class, 'storeSale']);
+Route::get('sales/{id}', [SalesAndSellerController::class, 'showSale']);
+Route::get('sales/{id}/edit', [SalesAndSellerController::class, 'editSale']);
+Route::put('sales/{id}/edit', [SalesAndSellerController::class, 'updateSale']);
+Route::delete('sales/{id}/delete', [SalesAndSellerController::class, 'deleteSale']);
