@@ -12,20 +12,33 @@ class SalesAndSellerController extends Controller
 {
     public function index(){
 
-        $salesAndSeller = Sale::with('seller')->get();
+        $salesAndSellers = Sale::with('seller')->get();
+        
+        if(count($salesAndSellers) > 0){
 
-        if(count($salesAndSeller) > 0){
+            $arraySaleaAndSeller = array();
+
+            foreach($salesAndSellers as $saleAndSeller){
+                $arraySaleaAndSeller [] = [
+                    'id_seller' => $saleAndSeller->seller->id,
+                    'name' => $saleAndSeller->seller->name,
+                    'email' => $saleAndSeller->seller->email,
+                    'id_sale' => $saleAndSeller->id,
+                    'value' => $saleAndSeller->value,
+                    'commission' => $saleAndSeller->commission,
+                ];
+            }
 
             return response()->json([
                 'status' => 200,
-                'salesAndSeller' => $salesAndSeller
+                'salesAndSellers' => $arraySaleaAndSeller
             ], 200);
 
         } else {
 
             return response()->json([
                 'status' => 404,
-                'salesAndSeller' => 'data not found'
+                'salesAndSellers' => 'data not found'
             ], 404);
         }
     }
@@ -71,9 +84,9 @@ class SalesAndSellerController extends Controller
 
     public function showSale($id){
 
-        $sales = Sale::find($id)->with('seller')->get();
-
-        if(count($sales) > 0){
+        $sales = Sale::find($id);
+        
+        if($sales){
 
             return response()->json([
                 'status' => 200,
@@ -91,9 +104,9 @@ class SalesAndSellerController extends Controller
 
     public function editSale($id){
 
-        $sales = Sale::find($id)->get();
-
-        if(count($sales) > 0){
+        $sales = Sale::find($id);
+        
+        if($sales){
 
             return response()->json([
                 'status' => 200,
